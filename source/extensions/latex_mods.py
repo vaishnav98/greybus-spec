@@ -7,16 +7,16 @@ from docutils.frontend import OptionParser
 from docutils import nodes
 
 import sphinx.builders.latex
-from sphinx.util.smartypants import educate_quotes_latex
+from smartypants_hack import educate_quotes_latex
 from sphinx.writers.latex import LaTeXWriter
 from sphinx.util.console import bold
 from sphinx.util.osutil import copyfile
-from sphinx.util.texescape import tex_escape_map
+from sphinx.util.texescape import _tex_escape_map
 import sphinx.writers.latex
 
 # remove usepackage for sphinx here, we add it later in the preamble in conf.py
-sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('\\usepackage{sphinx}', '')
-sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('%(numfig_format)s', '')
+#sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('\\usepackage{sphinx}', '')
+#sphinx.writers.latex.HEADER = sphinx.writers.latex.HEADER.replace('%(numfig_format)s', '')
 
 BaseTranslator = sphinx.writers.latex.LaTeXTranslator
 
@@ -187,8 +187,8 @@ class CustomLaTeXBuilder(sphinx.builders.latex.LaTeXBuilder):
 
         backup_translator = sphinx.writers.latex.LaTeXTranslator
         sphinx.writers.latex.LaTeXTranslator = CustomLaTeXTranslator
-        backup_doc = sphinx.writers.latex.BEGIN_DOC
-        sphinx.writers.latex.BEGIN_DOC = ''
+        #backup_doc = sphinx.writers.latex.BEGIN_DOC
+        #sphinx.writers.latex.BEGIN_DOC = ''
 
 #        # output these as include files
 #        for docname in ['abstract', 'dedication', 'acknowledgements']:
@@ -206,7 +206,7 @@ class CustomLaTeXBuilder(sphinx.builders.latex.LaTeXBuilder):
 #            docwriter.write(doctree, destination)
 
         sphinx.writers.latex.LaTeXTranslator = backup_translator
-        sphinx.writers.latex.BEGIN_DOC = backup_doc
+        #sphinx.writers.latex.BEGIN_DOC = backup_doc
 
     def finish(self, *args, **kwargs):
         super(CustomLaTeXBuilder, self).finish(*args, **kwargs)
